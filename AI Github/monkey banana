@@ -1,0 +1,52 @@
+% Monkey and Banana Problem
+
+% Define the initial state: monkey and box are at the floor, monkey is at position 'a', box is at position 'b', monkey is on the floor, and bananas are hanging from the ceiling at position 'b'.
+initial_state(state(at(monkey, a), at(box, b), on(monkey, floor), hanging(bananas, b))).
+
+% Define the goal state: monkey has the bananas.
+goal_state(state(at(monkey, _), at(box, _), on(monkey, _), has(monkey, bananas))).
+
+% Define possible actions and their effects
+% Action: monkey moves from one position to another
+move(state(at(monkey, P1), at(box, P2), on(monkey, floor), hanging(bananas, P2)),
+     move(P1, P2),
+     state(at(monkey, P2), at(box, P2), on(monkey, floor), hanging(bananas, P2))).
+
+% Action: monkey climbs onto the box
+move(state(at(monkey, P), at(box, P), on(monkey, floor), hanging(bananas, P)),
+     climb,
+     state(at(monkey, P), at(box, P), on(monkey, box), hanging(bananas, P))).
+
+% Action: monkey climbs down from the box
+move(state(at(monkey, P), at(box, P), on(monkey, box), hanging(bananas, P)),
+     climb_down,
+     state(at(monkey, P), at(box, P), on(monkey, floor), hanging(bananas, P))).
+
+% Action: monkey pushes the box from one position to another
+move(state(at(monkey, P1), at(box, P1), on(monkey, floor), hanging(bananas, P2)),
+     push_box(P1, P2),
+     state(at(monkey, P2), at(box, P2), on(monkey, floor), hanging(bananas, P2))).
+
+% Action: monkey grabs the bananas
+move(state(at(monkey, P), at(box, P), on(monkey, box), hanging(bananas, P)),
+     grab,
+     state(at(monkey, P), at(box, P), on(monkey, box), has(monkey, bananas))).
+
+% Define a search strategy (Depth-First Search)
+solve(State, _, []) :-
+    goal_state(State).
+
+solve(State, Visited, [Action|Actions]) :-
+    move(State, Action, NewState),
+    \+ member(NewState, Visited),
+    solve(NewState, [NewState|Visited], Actions).
+
+% Solve the problem from the initial state
+solve_problem(Actions) :-
+    initial_state(State),
+    solve(State, [State], Actions).
+
+% Example query:
+% ?- solve_problem(Actions).
+% This will return a list of actions that the monkey can take to get the bananas.
+

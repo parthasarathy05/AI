@@ -1,0 +1,37 @@
+% Birds Database
+% bird(Name, CanFly).
+
+% Facts about birds
+bird(sparrow, true).
+bird(eagle, true).
+bird(penguin, false).
+bird(ostrich, false).
+bird(swallow, true).
+bird(robin, true).
+bird(kiwi, false).
+
+% Rules
+% can_fly/1: Determine if a bird can fly based on its name
+can_fly(Bird) :-
+    bird(Bird, true).
+
+% cannot_fly/1: Determine if a bird cannot fly based on its name
+cannot_fly(Bird) :-
+    bird(Bird, false).
+
+% Queries
+% fly(Bird, Answer) - Determine if a particular bird can fly
+fly(Bird, 'can fly') :-
+    can_fly(Bird), !.
+
+fly(Bird, 'cannot fly') :-
+    cannot_fly(Bird), !.
+
+fly(Bird, 'unknown') :-
+    \+ bird(Bird, _).
+
+% Example queries:
+% ?- fly(sparrow, Answer).
+% ?- fly(penguin, Answer).
+% ?- fly(unknown_bird, Answer).
+

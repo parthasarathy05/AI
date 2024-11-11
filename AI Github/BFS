@@ -1,0 +1,42 @@
+% Define the graph edges and their costs
+edge(a, b, 1).
+edge(a, c, 4).
+edge(b, d, 2).
+edge(b, e, 5).
+edge(c, f, 1).
+edge(d, g, 2).
+edge(e, g, 1).
+edge(f, g, 3).
+
+% Define a heuristic function h(Node, HeuristicValue)
+% For simplicity, we'll use a heuristic that assumes the goal is 'g'
+h(a, 6).
+h(b, 4).
+h(c, 4).
+h(d, 2).
+h(e, 1).
+h(f, 3).
+h(g, 0).
+
+% Best First Search algorithm
+best_first_search(Start, Goal, Path, Cost) :-
+    best_first([[Start, 0]], Goal, [], Path, Cost).
+
+% Base case: if the current node is the goal, return the path and cost
+best_first([[Goal, Cost] | _], Goal, Visited, Path, Cost) :-
+    reverse([Goal | Visited], Path).
+
+% Recursive case: expand the current node and continue searching
+best_first([[Current, CurrentCost] | Rest], Goal, Visited, Path, Cost) :-
+    findall([Next, NewCost],
+            (edge(Current, Next, StepCost), \+ member(Next, Visited),
+             h(Next, Heuristic), NewCost is CurrentCost + StepCost + Heuristic),
+            Neighbors),
+    append(Rest, Neighbors, NewOpenList),
+    sort(2, @=<, NewOpenList, SortedOpenList),
+    best_first(SortedOpenList, Goal, [Current | Visited], Path, Cost).
+
+% Example query:
+% ?- best_first_search(a, g, Path, Cost).
+% This will return the path and the cost of the path from 'a' to 'g'.
+

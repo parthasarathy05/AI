@@ -1,0 +1,25 @@
+% Facts about diseases and their symptoms
+% disease(Disease, SymptomList).
+
+disease(cold, [cough, sneezing, sore_throat, runny_nose, fatigue]).
+disease(flu, [fever, cough, sore_throat, runny_nose, body_aches, fatigue, chills]).
+disease(covid_19, [fever, dry_cough, tiredness, loss_of_taste_or_smell, difficulty_breathing, chest_pain]).
+disease(allergy, [sneezing, runny_nose, itchy_eyes, watery_eyes, itchy_throat]).
+disease(strep_throat, [fever, sore_throat, swollen_lymph_nodes, headache, nausea]).
+disease(malaria, [fever, chills, headache, nausea, vomiting, fatigue, muscle_pain]).
+
+% Rules to diagnose a disease based on symptoms
+diagnose(Disease, Symptoms) :-
+    disease(Disease, DiseaseSymptoms),
+    subset(Symptoms, DiseaseSymptoms).
+
+% Helper predicate to check if all elements of a list are in another list
+subset([], _).
+subset([H|T], List) :-
+    member(H, List),
+    subset(T, List).
+
+% Example queries:
+% ?- diagnose(Disease, [fever, cough, sore_throat, runny_nose]).
+% ?- diagnose(Disease, [fever, dry_cough, loss_of_taste_or_smell]).
+

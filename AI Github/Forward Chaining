@@ -1,0 +1,57 @@
+% Define the rules and facts
+
+% Rule 1: If it rains, the grass gets wet.
+rule(grass_wet) :-
+    rain.
+
+% Fact 1: It is raining today.
+rain.
+
+% Rule 2: If the grass is wet, the ground is damp.
+rule(ground_damp) :-
+    grass_wet.
+
+% Fact 2: The grass is wet (derived from rule 1).
+grass_wet.
+
+% Rule 3: If the ground is damp, people track mud.
+rule(people_track_mud) :-
+    ground_damp.
+
+% Query: Is there mud being tracked today?
+query(people_track_mud).
+
+% Forward chaining algorithm
+forward_chain :-
+    % Repeat until no more facts can be derived
+    repeat,
+    (   
+        % Try to prove any rule
+        (   rule(X),
+            \+ fact(X),        % Check if X is not already a fact
+            assert(fact(X)),   % Assert X as a new fact
+            write('Derived: '), write(X), nl,
+            fail               % Force backtracking to find more facts
+        )
+    ;
+        % Stop when no more facts can be derived
+        true
+    ).
+
+% Entry point: Start forward chaining and answer the query
+start :-
+    forward_chain,
+    (   
+        % Check if the query is a known fact
+        query(Q),
+        fact(Q),
+        write('Query '), write(Q), write(' is true.'), nl,
+        fail
+    ;
+        % If query cannot be proven
+        write('Query cannot be proven.'), nl
+    ).
+
+% Example run:
+% To see if people are tracking mud, we run:
+% ?- start.

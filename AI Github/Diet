@@ -1,0 +1,28 @@
+% Dieting System Database
+
+% Facts about diseases and dietary suggestions
+% diet(Disease, Diet).
+
+diet(diabetes, 'Low sugar diet, high fiber diet, lean proteins, complex carbohydrates, vegetables').
+diet(hypertension, 'Low sodium diet, DASH diet, high potassium foods, lean proteins, whole grains, vegetables').
+diet(heart_disease, 'Low cholesterol diet, low saturated fat diet, high fiber diet, fruits, vegetables, lean proteins').
+diet(obesity, 'Calorie-controlled diet, balanced diet with fruits, vegetables, lean proteins, whole grains').
+diet(celiac_disease, 'Gluten-free diet, fruits, vegetables, lean proteins, gluten-free grains').
+diet(anemia, 'Iron-rich diet, vitamin C-rich foods, lean meats, leafy greens, fortified cereals').
+diet(kidney_disease, 'Low sodium diet, low potassium diet, low phosphorus diet, lean proteins, controlled fluid intake').
+
+% Rules
+
+% get_diet(Disease, Diet) - Suggests a diet for the given disease
+get_diet(Disease, Diet) :-
+    diet(Disease, Diet).
+
+% Example queries:
+% ?- get_diet(diabetes, Diet).
+% ?- get_diet(hypertension, Diet).
+% ?- get_diet(heart_disease, Diet).
+% ?- get_diet(obesity, Diet).
+% ?- get_diet(celiac_disease, Diet).
+% ?- get_diet(anemia, Diet).
+% ?- get_diet(kidney_disease, Diet).
+

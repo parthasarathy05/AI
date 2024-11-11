@@ -1,0 +1,43 @@
+% Define the rules and facts
+
+% Rule 1: If it rains, the grass gets wet.
+rule(grass_wet) :-
+    rain.
+
+% Fact 1: It is raining today.
+rain.
+
+% Rule 2: If the grass is wet, the ground is damp.
+rule(ground_damp) :-
+    grass_wet.
+
+% Fact 2: The grass is wet (derived from rule 1).
+grass_wet.
+
+% Rule 3: If the ground is damp, people track mud.
+rule(people_track_mud) :-
+    ground_damp.
+
+% Query: What do we need to prove?
+query(people_track_mud).
+
+% Backward chaining algorithm
+backward_chain(Goal) :-
+    % If the goal is already a fact, succeed
+    fact(Goal).
+
+backward_chain(Goal) :-
+    % Try to prove the goal by finding a rule that concludes with Goal
+    rule(Goal),
+    % Recursively prove the conditions of the rule
+    backward_chain_condition(Goal).
+
+backward_chain_condition(Goal) :-
+    % For each condition of the rule, recursively prove it
+    rule(Goal),
+    % Recursively prove the conditions of the rule
+    backward_chain_condition(Goal).
+
+backward_chain_condition(Goal) :-
+    % For each condition of the rule, recursively prove it
+ Goal Fact recursively

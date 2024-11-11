@@ -1,0 +1,95 @@
+% Family Tree Database
+
+% Facts
+% parent(Parent, Child).
+parent(john, mary).
+parent(john, paul).
+parent(mary, susan).
+parent(mary, george).
+parent(paul, kate).
+parent(paul, tom).
+parent(susan, jill).
+parent(susan, mike).
+
+% male(Person).
+male(john).
+male(paul).
+male(george).
+male(tom).
+male(mike).
+
+% female(Person).
+female(mary).
+female(susan).
+female(kate).
+female(jill).
+
+% Rules
+
+% mother(Mother, Child) - True if Mother is the mother of Child
+mother(Mother, Child) :-
+    parent(Mother, Child),
+    female(Mother).
+
+% father(Father, Child) - True if Father is the father of Child
+father(Father, Child) :-
+    parent(Father, Child),
+    male(Father).
+
+% sibling(Person1, Person2) - True if Person1 and Person2 are siblings
+sibling(Person1, Person2) :-
+    parent(Parent, Person1),
+    parent(Parent, Person2),
+    Person1 \= Person2.
+
+% brother(Brother, Person) - True if Brother is the brother of Person
+brother(Brother, Person) :-
+    sibling(Brother, Person),
+    male(Brother).
+
+% sister(Sister, Person) - True if Sister is the sister of Person
+sister(Sister, Person) :-
+    sibling(Sister, Person),
+    female(Sister).
+
+% grandparent(Grandparent, Grandchild) - True if Grandparent is a grandparent of Grandchild
+grandparent(Grandparent, Grandchild) :-
+    parent(Grandparent, Parent),
+    parent(Parent, Grandchild).
+
+% grandmother(Grandmother, Grandchild) - True if Grandmother is the grandmother of Grandchild
+grandmother(Grandmother, Grandchild) :-
+    grandparent(Grandmother, Grandchild),
+    female(Grandmother).
+
+% grandfather(Grandfather, Grandchild) - True if Grandfather is the grandfather of Grandchild
+grandfather(Grandfather, Grandchild) :-
+    grandparent(Grandfather, Grandchild),
+    male(Grandfather).
+
+% aunt(Aunt, NieceOrNephew) - True if Aunt is the aunt of NieceOrNephew
+aunt(Aunt, NieceOrNephew) :-
+    sister(Aunt, Parent),
+    parent(Parent, NieceOrNephew).
+
+% uncle(Uncle, NieceOrNephew) - True if Uncle is the uncle of NieceOrNephew
+uncle(Uncle, NieceOrNephew) :-
+    brother(Uncle, Parent),
+    parent(Parent, NieceOrNephew).
+
+% cousin(Cousin1, Cousin2) - True if Cousin1 and Cousin2 are cousins
+cousin(Cousin1, Cousin2) :-
+    parent(Parent1, Cousin1),
+    parent(Parent2, Cousin2),
+    sibling(Parent1, Parent2).
+
+% Example queries:
+% ?- mother(mary, Child).
+% ?- father(john, Child).
+% ?- sibling(mary, paul).
+% ?- brother(george, Sibling).
+% ?- sister(susan, Sibling).
+% ?- grandparent(john, Grandchild).
+% ?- aunt(susan, NieceOrNephew).
+% ?- uncle(paul, NieceOrNephew).
+% ?- cousin(susan, Cousin).

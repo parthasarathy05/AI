@@ -1,0 +1,57 @@
+% Planets Database
+% Facts about the planets
+
+% planet(Name, Type, Distance_from_sun_km, Mass_kg)
+
+planet(mercury, terrestrial, 57910000, 3.3011e23).
+planet(venus, terrestrial, 108200000, 4.8675e24).
+planet(earth, terrestrial, 149600000, 5.97237e24).
+planet(mars, terrestrial, 227900000, 6.4171e23).
+planet(jupiter, gas_giant, 778500000, 1.8982e27).
+planet(saturn, gas_giant, 1434000000, 5.6834e26).
+planet(uranus, ice_giant, 2871000000, 8.6810e25).
+planet(neptune, ice_giant, 4495000000, 1.02413e26).
+
+% Rules
+
+% Find all terrestrial planets
+terrestrial_planet(Name) :-
+    planet(Name, terrestrial, _, _).
+
+% Find all gas giants
+gas_giant(Name) :-
+    planet(Name, gas_giant, _, _).
+
+% Find all ice giants
+ice_giant(Name) :-
+    planet(Name, ice_giant, _, _).
+
+% Find planets within a certain distance from the sun (in km)
+planets_within_distance(Distance, Name) :-
+    planet(Name, _, Distance_from_sun, _),
+    Distance_from_sun =< Distance.
+
+% Find planets with a mass greater than a certain value (in kg)
+planets_with_mass_greater_than(Mass, Name) :-
+    planet(Name, _, _, Mass_planet),
+    Mass_planet > Mass.
+
+% Find the closest planet to the sun
+closest_planet(Name) :-
+    planet(Name, _, Distance_from_sun, _),
+    \+ (planet(_, _, D, _), D < Distance_from_sun).
+
+% Find the farthest planet from the sun
+farthest_planet(Name) :-
+    planet(Name, _, Distance_from_sun, _),
+    \+ (planet(_, _, D, _), D > Distance_from_sun).
+
+% Example queries:
+% ?- terrestrial_planet(Name).
+% ?- gas_giant(Name).
+% ?- ice_giant(Name).
+% ?- planets_within_distance(200000000, Name).
+% ?- planets_with_mass_greater_than(1e26, Name).
+% ?- closest_planet(Name).
+% ?- farthest_planet(Name).
+
